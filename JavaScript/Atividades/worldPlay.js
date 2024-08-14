@@ -31,7 +31,20 @@ function wordsGreaterThan(lines, size){
     }
 }
 
-function hasNoLetter(lines, letter){
+function hasLetter(lines, letter){
+
+    for (let word of lines){
+        let hasLetter = false;
+        for (let i of word){
+            if (i === letter || i.charCodeAt(0) === letter.charCodeAt(0) + 32){
+                hasLetter = true;
+                continue;
+            }
+        }
+    }
+}
+
+function hasNoLetter(lines, letter,show){
     let wordsAmount = lines.length - 1;
     let wordsWithoutLetter = 0;
 
@@ -46,24 +59,56 @@ function hasNoLetter(lines, letter){
         }   
         if (! hasLetter){
             wordsWithoutLetter++ 
-            console.log(word);
+            let print = show ? console.log(word) : wordsAmount
         }
     }
     let wordsPercent = (wordsWithoutLetter/wordsAmount) * 100;
-    console.log(`>>> ${wordsPercent.toFixed(1)}% das palavras não possuem "${letter}" <<<`);
+    console.log(`\n>>> ${wordsWithoutLetter} | ${wordsPercent.toFixed(1)}% das palavras não possuem "${letter}" <<<`)
 
     return wordsWithoutLetter;
 }
 
 function avoids(lines){
     let bannedLetters = ask("Digite as letras proibidas juntas: ")
+    let newBanned = ""
+    let total = 0
 
     for (let letter of bannedLetters){
-    
+        for (let count = 0; count <= getLength(bannedLetters); count++){
+                if (letter === bannedLetters[count] && ! inNewBanned(newBanned,letter)){
+                    newBanned += letter
+            }
+        }
     }
+
+    for (let letter of newBanned){
+        total += hasNoLetter(lines, letter,false)
+    }   
+    console.log(`\n>>>>>> O total de palavas sem as letras são: ${total}`)
 }
 
+function inNewBanned(newBan, letter){
+     
+    for (let i of newBan){
+        if (letter === i || letter === " "){
+            return true
+        }
+    }
+    return false
+}
 
+function usesOnly(){
+    let lettersOnly = ask("Digite as letras permitidas juntas: ")
+    let newAllow = ""
+    
+    for (let letter of lettersOnly){
+        for (let count = 0; count <= getLength(lettersOnly); count++){
+                if (letter === lettersOnly[count] && ! inNewBanned(newAllow, letter)){
+                    newAllow += letter
+            }
+        }
+    }
+}
 
 function showMenu(){
     console.clear();
@@ -98,9 +143,11 @@ function main(){
             wordsGreaterThan(lines,20);
         } else if (option === 2){
             letterToHide = (letterToHide === "") ? aksLetter("Digite uma letra: ") : letterToHide
-            hasNoLetter(lines,letterToHide);
+            hasNoLetter(lines,letterToHide,true);
          }else if (option === 3){
             avoids(lines)
+         }else if (option === 4){
+            usesOnly()
          }
 
         ask(`\nContinuar(Press Enter)`);

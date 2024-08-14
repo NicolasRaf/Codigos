@@ -52,20 +52,18 @@ function hasNoLetter(lines, letter){
     let wordsPercent = (wordsWithoutLetter/wordsAmount) * 100;
     console.log(`>>> ${wordsPercent.toFixed(1)}% das palavras não possuem "${letter}" <<<`);
 
-    return wordsWithoutLetter
+    return wordsWithoutLetter;
+}
 
 function avoids(lines){
-    let letterAmount = getNumberPositive("Quantas letras serão proibidas: ") 
-    let bannedLetters = ""
+    let bannedLetters = ask("Digite as letras proibidas juntas: ")
 
-    for (let i = 0; i <= letterAmount; i++){
-
-
+    for (let letter of bannedLetters){
+    
     }
-
 }
 
-}
+
 
 function showMenu(){
     console.clear();

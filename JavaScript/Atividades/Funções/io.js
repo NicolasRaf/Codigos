@@ -2,8 +2,8 @@ import { question } from "readline-sync";
 
 // Pergunta algo ao usuário e recebe uma string
 export function ask(text) {
-  const answer = question(text) 
-
+  const answer = question(text)
+  
   return answer
 }
 

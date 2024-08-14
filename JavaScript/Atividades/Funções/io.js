@@ -7,12 +7,28 @@ export function ask(text) {
   return answer
 }
 
+export function aksLetter(text){
+  const answer = ask(text)
+  const ASCII = answer.charCodeAt(0)
+
+  if (answer.length > 1){
+    console.log("\nDigite apenas um caractere!\n")
+    return aksLetter(text)
+  } else if (ASCII < 65 || ASCII > 90 && ASCII < 97 || ASCII > 122 || answer === ""){
+    console.log("\nDigite somente letras!\n")
+    return aksLetter(text)
+  }
+
+  return answer
+}
+
 // Recebe um numero qualquer com base na pergunta enviada ao usuário
 export function  getNumber(text){
     const number = Number(question(text))
 
     return number
 }
+
 
 // Recebe um numero positivo com base na pergunta enviada ao usuário
 export function getNumberPositive(text){

@@ -31,17 +31,41 @@ function wordsGreaterThan(lines, size){
     }
 }
 
-function hasLetter(lines, letter){
+function hasLetters(lines, letters) {
+    let wordsAmount = lines.length;
+    let wordsWithOnlyLetters = 0;
 
-    for (let word of lines){
-        let hasLetter = false;
-        for (let i of word){
-            if (i === letter || i.charCodeAt(0) === letter.charCodeAt(0) + 32){
-                hasLetter = true;
-                continue;
+    for (let word of lines) {
+        let hasOnlyLetters = true;
+
+        for (let i = 0; i < word.length - 1; i++) {
+            let char = word[i];
+            let found = false;
+            
+            for (let letter of letters) {
+                if (char === letter || char.charCodeAt(0) === letter.charCodeAt(0) + 32) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                hasOnlyLetters = false;
+                break;
             }
         }
+
+        if (hasOnlyLetters) {
+            wordsWithOnlyLetters++;
+            console.log(word);
+        }
     }
+
+    wordsWithOnlyLetters--
+    let wordsPercent = (wordsWithOnlyLetters / wordsAmount) * 100;
+    console.log(`\n>>> ${wordsWithOnlyLetters} | ${wordsPercent.toFixed(4)}% das palavras contêm apenas as letras permitidas <<<`);
+
+    return wordsWithOnlyLetters;
 }
 
 function hasNoLetter(lines, letter,show){
@@ -50,8 +74,8 @@ function hasNoLetter(lines, letter,show){
 
     for (let word of lines){
         let hasLetter = false;
-        for (let i of word){
-            if (i === letter || i.charCodeAt(0) === letter.charCodeAt(0) + 32){
+        for (let char of word){
+            if (char === letter || char.charCodeAt(0) === letter.charCodeAt(0) + 32){
                 hasLetter = true;
                 break;
     
@@ -63,7 +87,7 @@ function hasNoLetter(lines, letter,show){
         }
     }
     let wordsPercent = (wordsWithoutLetter/wordsAmount) * 100;
-    console.log(`\n>>> ${wordsWithoutLetter} | ${wordsPercent.toFixed(1)}% das palavras não possuem "${letter}" <<<`)
+    console.log(`\n>>> ${wordsWithoutLetter - 1} | ${wordsPercent.toFixed(1)}% das palavras não possuem "${letter}" <<<`)
 
     return wordsWithoutLetter;
 }
@@ -75,7 +99,7 @@ function avoids(lines){
 
     for (let letter of bannedLetters){
         for (let count = 0; count <= getLength(bannedLetters); count++){
-                if (letter === bannedLetters[count] && ! inNewBanned(newBanned,letter)){
+                if (letter === bannedLetters[count] && ! inNewList(newBanned,letter)){
                     newBanned += letter
             }
         }
@@ -87,7 +111,37 @@ function avoids(lines){
     console.log(`\n>>>>>> O total de palavas sem as letras são: ${total}`)
 }
 
-function inNewBanned(newBan, letter){
+function usesOnly(lines){
+    let lettersOnly = ask("Digite as letras permitidas juntas: ")
+    let newAllow = ""
+    
+    for (let letter of lettersOnly){
+        for (let count = 0; count <= getLength(lettersOnly); count++){
+                if (letter === lettersOnly[count] && ! inNewList(newAllow, letter)){
+                    newAllow += letter
+            }
+        }
+    }
+
+    hasLetters(lines, newAllow)
+}
+     
+function usesAll(lines){
+    let lettersOnly = ask("Digite as letras permitidas juntas: ")
+    let newAllow = ""
+    
+    for (let letter of lettersOnly){
+        for (let count = 0; count <= getLength(lettersOnly); count++){
+                if (letter === lettersOnly[count] && ! inNewList(newAllow, letter)){
+                    newAllow += letter
+            }
+        }
+    }
+
+    hasLetters(lines, newAllow)
+}
+ 
+function inNewList(newBan, letter){
      
     for (let i of newBan){
         if (letter === i || letter === " "){
@@ -97,18 +151,7 @@ function inNewBanned(newBan, letter){
     return false
 }
 
-function usesOnly(){
-    let lettersOnly = ask("Digite as letras permitidas juntas: ")
-    let newAllow = ""
-    
-    for (let letter of lettersOnly){
-        for (let count = 0; count <= getLength(lettersOnly); count++){
-                if (letter === lettersOnly[count] && ! inNewBanned(newAllow, letter)){
-                    newAllow += letter
-            }
-        }
-    }
-}
+
 
 function showMenu(){
     console.clear();
@@ -116,11 +159,11 @@ function showMenu(){
     console.log(`
     ------------------------- WorldPlay --------------------------   
 
-      [1] Palavras com 20+ Letras    [6]  Palavras com 20+ letras 
+      [1] Palavras com 20+ Letras    [6]  Palavras em Ordem Alfabética 
       [2] Palavras sem Letra X       [7]  Palavras com 20+ letras 
       [3] Letras Proibidas           [8]  Palavras com 20+ letras 
-      [4] Palavras com 20+ letras    [9]  Palavras com 20+ letras 
-      [5] Palavras com 20+ letras    [10] Finalizar Execução                                                                               
+      [4] Letras Únicas              [9]  Palavras com 20+ letras 
+      [5] Letras Obrigatórias        [10] Finalizar Execução                                                                               
     `);
 
     let option = getNumberInRange("Selecione uma opção: ",1,10,"\nSelecione uma opção valida!!\n");
@@ -133,8 +176,8 @@ function main(){
     let option = showMenu();
 
     const data = fs.readFileSync('words.txt', 'utf-8');
-    const lines = data.split("\n");
-
+    let lines = data.split("\n")
+    
     while (option !== 10){
         let size = 0
         let letterToHide = ""
@@ -147,7 +190,9 @@ function main(){
          }else if (option === 3){
             avoids(lines)
          }else if (option === 4){
-            usesOnly()
+            usesOnly(lines)
+         }else if(option === 5){
+            usesAll(lines)
          }
 
         ask(`\nContinuar(Press Enter)`);

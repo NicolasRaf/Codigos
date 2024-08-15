@@ -164,14 +164,16 @@ function isAbecedarian(lines) {
     for (let word of lines) {
         let isAbecedarian = true;
 
-        for (let i = 1; i < word.length - 1; i++) {
-            if (word[i].charCodeAt(0) < word[i - 1].charCodeAt(0)) {
+        for (let i = 1; i < getLength(word) - 1; i++) {
+            let currentLetterCode = word[i].charCodeAt(0);
+            let previousLetterCode = word[i - 1].charCodeAt(0);
+            if (currentLetterCode < previousLetterCode) {
                 isAbecedarian = false;
                 break;
             }
         }
 
-        if (isAbecedarian && word.length > 0) {
+        if (isAbecedarian && getLength(word) > 0) {
             totalWords++
             console.log(word);
         }
@@ -207,12 +209,11 @@ function isAbecedarianAnywhere(lines) {
 }
 
 
-
 function showMenu() {
     console.clear();
 
     console.log(`
-    ------------------------- WorldPlay --------------------------   
+    ------------------------------- WorldPlay --------------------------------   
 
       [1] Palavras com 20+ Letras    [6]  Palavras em Ordem Alfabética 
       [2] Palavras sem Letra X       [7]  Ordem Alfabética em Qualquer Parte

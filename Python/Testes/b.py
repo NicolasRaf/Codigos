@@ -1,7 +1,15 @@
+from math import comb
 
+n = 10  
+p = 0.2  
+q = 1 - p  
 
-my_list = [[c for c in range (r)] for r in range (3)]
+k_values = [1,2,3,4,5,6,7,8,9,10]  
+prob_sum = 0
 
-for element in my_list:
-    if len(element) < 2:
-        print ()
+for k in k_values:
+    prob = comb(n, k) * (p ** k) * (q ** (n - k))
+    print(k,"->",prob)
+    prob_sum += prob
+
+print(prob_sum)

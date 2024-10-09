@@ -6,17 +6,23 @@ int main(void){
 
 	do{
 		swapped = 0;
+		printf("[ ");
 
 		for (i = 0; i < 10; i++){
-			printf("%.2f ", numbers[i]);
-
+			if (i < 9){
+				printf("%.2f, ", numbers[i]);
+			} else {
+				printf("%.2f ", numbers[i]);
+			}
+			
 			if (numbers[i] < numbers[i + 1]){
 				swapped = 1;
 				aux = numbers[i];
 				numbers[i] = numbers[i + 1];
 				numbers[i + 1] = aux;
 			}
-		}
+		}	
+		printf("]\n");
 		puts("");
 		
 	} while (swapped);

@@ -6,7 +6,7 @@ int main(void){
 
 	do{
 		swapped = 0;
-		printf("[ ");
+		//printf("[ ");
 
 		for (i = 0; i < 10; i++){
 			if (i < 9){
@@ -22,7 +22,7 @@ int main(void){
 				numbers[i + 1] = aux;
 			}
 		}	
-		printf("]\n");
+		//printf("]\n");
 		puts("");
 		
 	} while (swapped);

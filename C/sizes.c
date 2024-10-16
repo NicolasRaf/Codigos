@@ -1,7 +1,18 @@
 #include <stdio.h>
 
-int main(void) 
-{
+void clearConsole(){
+	printf("\033[H\033[J");
+
+	/* \033[H --> Move o cursor para o canto superior esquerdo do terminal.
+	   \033[J --> Limpa a tela a partir do cursor até o final do terminal.*/
+}
+
+
+int main(void) {
+	clearConsole();
+
+	char numbers[10];
+
 	int v;
 	printf("%zu byte for chars\n", sizeof(char));
 	char c;
